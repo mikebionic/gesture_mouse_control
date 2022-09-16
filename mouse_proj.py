@@ -35,10 +35,6 @@ def findColor(img,myColors,myColorValues):
 			newPoints.append([x,y,count])
 		count+=1
 		# cv2.imshow(str[0]),mask)
-	print(newPoints)
-	if len(newPoints) > 0:
-		pyautogui.moveTo(newPoints[-1][0], newPoints[-1][1], duration = 0.1)
-
 	return newPoints
 
 def getContours(img):
@@ -59,6 +55,11 @@ def drawOnCanvas(myPoints,myColorValues):
 		cv2.circle(imgResult,(point[0],point[1]),10,myColorValues[point[2]],cv2.FILLED)
 
 
+def moveUI(newPoints):
+	# print(newPoints)
+	if len(newPoints) > 0:
+		pyautogui.moveTo(newPoints[-1][0], newPoints[-1][1])
+
 while True:
 	success, img = cap.read()
 	img = cv2.flip(img,1)
@@ -67,6 +68,9 @@ while True:
 	if len(newPoints)!=0:
 		for newP in newPoints:
 			myPoints.append(newP)
+
+	moveUI(newPoints)
+	# print(myPoints)
 	# if len(myPoints)!=0:
 	# 	drawOnCanvas(myPoints,myColorValues)
 	cv2.imshow("Cam",imgResult)
