@@ -2,6 +2,9 @@ import cv2
 import numpy as np
 import pyautogui
 
+screenWidth = 1024
+screenHeight = 640
+
 frameWidth = 640
 frameHeight = 480
 cap = cv2.VideoCapture(2)
@@ -56,9 +59,35 @@ def drawOnCanvas(myPoints,myColorValues):
 
 
 def moveUI(newPoints):
-	# print(newPoints)
+	action_type = "move"
+	point_x = 450
+	point_y = 450
+
+	# action types : move drag zoom
 	if len(newPoints) > 0:
-		pyautogui.moveTo(newPoints[-1][0], newPoints[-1][1])
+		if len(newPoints) > 1:
+			action_type = "drag"
+		if len(newPoints) == 1:
+			action_type = "move"
+
+		for this_point in newPoints:
+			if this_point[-1] == 3:
+				point_x = newPoints[-1][0]
+				point_y = newPoints[-1][1]
+							
+				screen_x = point_x*screenWidth/frameWidth
+				screen_y = point_y*screenHeight/frameHeight
+				if action_type == "move":
+					pyautogui.moveTo(screen_x, screen_y)
+				elif action_type == "drag":
+					pyautogui.dragTo(screen_x, screen_y, 0, button='left')
+
+		# pyautogui.moveTo(1080, 380)
+		# pyautogui.mouseDown(button='left')
+		# pyautogui.dragTo(917, 564, 1, button='left')
+		# time.sleep(10)
+		# pyautogui.mouseUp(button='left')
+		# time.sleep(2)
 
 while True:
 	success, img = cap.read()
