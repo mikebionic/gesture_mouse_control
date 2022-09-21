@@ -2,12 +2,17 @@ import cv2
 import numpy as np
 import pyautogui
 
-screenWidth = 1024
-screenHeight = 640
+import sys
+capture_port = int(sys.argv[1]) if len(sys.argv) > 1 else 2
+screenWidth  = int(sys.argv[2]) if len(sys.argv) > 2 else 1366
+screenHeight = int(sys.argv[3]) if len(sys.argv) > 3 else 768
+
+#screenWidth = 1366
+#screenHeight = 768
 
 frameWidth = 640
 frameHeight = 480
-cap = cv2.VideoCapture(2)
+cap = cv2.VideoCapture(capture_port)
 cap.set(3,frameWidth)
 cap.set(4,frameHeight)
 # brightness
@@ -70,17 +75,21 @@ def moveUI(newPoints):
 		if len(newPoints) == 1:
 			action_type = "move"
 
-		for this_point in newPoints:
-			if this_point[-1] == 3:
-				point_x = newPoints[-1][0]
-				point_y = newPoints[-1][1]
+		if len(newPoints) > 2:
+			pyautogui.press("space")
+
+		if not len(newPoints) > 2:
+			for this_point in newPoints:
+				if this_point[-1] == 3:
+					point_x = newPoints[-1][0]
+					point_y = newPoints[-1][1]
 							
-				screen_x = point_x*screenWidth/frameWidth
-				screen_y = point_y*screenHeight/frameHeight
-				if action_type == "move":
-					pyautogui.moveTo(screen_x, screen_y)
-				elif action_type == "drag":
-					pyautogui.dragTo(screen_x, screen_y, 0, button='left')
+					screen_x = point_x*screenWidth/frameWidth
+					screen_y = point_y*screenHeight/frameHeight
+					if action_type == "move":
+						pyautogui.moveTo(screen_x, screen_y)
+					elif action_type == "drag":
+						pyautogui.dragTo(screen_x, screen_y, 0, button='left')
 
 		# pyautogui.moveTo(1080, 380)
 		# pyautogui.mouseDown(button='left')

@@ -2,11 +2,16 @@ import cv2
 import numpy as np
 import pyautogui
 from time import sleep
+
+import sys
+capture_port = int(sys.argv[1]) if len(sys.argv) > 1 else 2
+
+
 # cascade = cv2.CascadeClassifier('./data/haarcascade_frontalface_alt.xml')
 fist = cv2.CascadeClassifier('./data/fist.xml')
 palm = cv2.CascadeClassifier('./data/open_palm.xml')
 # cascade = cv2.CascadeClassifier('./data/haarcascade_righteye_2splits.xml')
-cap = cv2.VideoCapture(2) 
+cap = cv2.VideoCapture(capture_port) 
 scaling_factor = 0.5
 
 pressed = False
