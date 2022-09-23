@@ -4,7 +4,7 @@ import pyautogui
 from time import sleep
 
 import sys
-capture_port = int(sys.argv[1]) if len(sys.argv) > 1 else 2
+capture_port = int(sys.argv[1]) if len(sys.argv) > 1 else 0
 
 
 # cascade = cv2.CascadeClassifier('./data/haarcascade_frontalface_alt.xml')
@@ -20,9 +20,9 @@ spacePressed = False
 while True:
 	ret, frame = cap.read() 
 	frame = cv2.flip(frame,1)   
-	frame = cv2.resize(frame, None, fx=scaling_factor, fy=scaling_factor, interpolation=cv2.INTER_AREA)
-	fist_rects = fist.detectMultiScale(frame, scaleFactor=1.3, minNeighbors=3)  
-	palm_rects = palm.detectMultiScale(frame, scaleFactor=1.3, minNeighbors=3)
+	# frame = cv2.resize(frame, None, fx=scaling_factor, fy=scaling_factor, interpolation=cv2.INTER_AREA)
+	fist_rects = fist.detectMultiScale(frame, scaleFactor=1.3, minNeighbors=5)  
+	palm_rects = palm.detectMultiScale(frame, scaleFactor=1.3, minNeighbors=5)
 	for (x,y,w,h) in palm_rects:
 		centerx = 150
 		cv2.rectangle(frame, (x,y), (x+w,y+h), (0,255,100), 5)
@@ -60,7 +60,7 @@ while True:
 		else:
 			spacePressed = False
 			
-	cv2.imshow('Media control', frame)
+	cv2.imshow('Media dolanshyk', frame)
 	    
 	c = cv2.waitKey(1)     
 	if c == 27:        

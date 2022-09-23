@@ -3,9 +3,9 @@ import numpy as np
 import pyautogui
 
 import sys
-capture_port = int(sys.argv[1]) if len(sys.argv) > 1 else 2
-screenWidth  = int(sys.argv[2]) if len(sys.argv) > 2 else 1366
-screenHeight = int(sys.argv[3]) if len(sys.argv) > 3 else 768
+capture_port = int(sys.argv[1]) if len(sys.argv) > 1 else 0
+screenWidth  = int(sys.argv[2]) if len(sys.argv) > 2 else 1920
+screenHeight = int(sys.argv[3]) if len(sys.argv) > 3 else 1080
 
 #screenWidth = 1366
 #screenHeight = 768
@@ -87,9 +87,13 @@ def moveUI(newPoints):
 					screen_x = point_x*screenWidth/frameWidth
 					screen_y = point_y*screenHeight/frameHeight
 					if action_type == "move":
+						pyautogui.mouseUp(button='left')
 						pyautogui.moveTo(screen_x, screen_y)
 					elif action_type == "drag":
-						pyautogui.dragTo(screen_x, screen_y, 0, button='left')
+						pyautogui.mouseDown(button='left')
+						pyautogui.moveTo(screen_x, screen_y)
+						# pyautogui.dragTo(screen_x, screen_y, 0, button='left')
+					# else:
 
 		# pyautogui.moveTo(1080, 380)
 		# pyautogui.mouseDown(button='left')
@@ -111,6 +115,6 @@ while True:
 	# print(myPoints)
 	# if len(myPoints)!=0:
 	# 	drawOnCanvas(myPoints,myColorValues)
-	cv2.imshow("Cam",imgResult)
+	cv2.imshow("dolanshyk",imgResult)
 	if cv2.waitKey(1) & 0xFF == ord('q'):
 		break
