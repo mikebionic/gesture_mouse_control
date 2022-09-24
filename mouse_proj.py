@@ -10,6 +10,7 @@ screenHeight = int(sys.argv[3]) if len(sys.argv) > 3 else 1080
 #screenWidth = 1366
 #screenHeight = 768
 
+perform	= False
 frameWidth = 640
 frameHeight = 480
 cap = cv2.VideoCapture(capture_port)
@@ -107,14 +108,26 @@ while True:
 	img = cv2.flip(img,1)
 	imgResult = img.copy()
 	newPoints = findColor(img,myColors,myColorValues)
+	print(newPoints)
 	if len(newPoints)!=0:
 		for newP in newPoints:
 			myPoints.append(newP)
 
-	moveUI(newPoints)
+
+	# global perform
+	if cv2.waitKey(10) & 0xFF == ord('p'):
+		perform = not perform
+		if perform:
+			print ('Mouse simulation ON...')
+		else:
+			print ('Mouse simulation OFF...')
+
+	if perform:
+		moveUI(newPoints)
 	# print(myPoints)
 	# if len(myPoints)!=0:
 	# 	drawOnCanvas(myPoints,myColorValues)
 	cv2.imshow("dolanshyk",imgResult)
 	if cv2.waitKey(1) & 0xFF == ord('q'):
 		break
+
