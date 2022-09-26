@@ -19,15 +19,30 @@ cap.set(4,frameHeight)
 # brightness
 cap.set(10,150)
 # get colorPicker.py (1:52:24)
-myColors = [[5,107,0,19,255,255],
-			[133,56,0,159,156,255],
-			[57,76,0,100,255,255],
-			[90,48,0,118,255,255]]
+# 1 pink
+# 2 green
+# 3 red
+# 4 blue
+myColors = [[133, 37,163,179,210,255],
+			[70,98,2,94,250,255],
+			# [0,149,52,34,253,255],
+			[0,207,255,112,255,255]]
 
-myColorValues = [[51,153,255],
-				[255,0,255],
-				[0,255,0],
-				[255,0,0]]
+# myColors = [[5,107,0,19,255,255],
+# 			[133,56,0,159,156,255],
+# 			[57,76,0,100,255,255],
+# 			[90,48,0,118,255,255]]
+
+
+myColorValues = [[245,12,241],
+				[2,199,50],
+				# [0,40,255],
+				[245,45,45]]
+
+# myColorValues = [[51,153,255],
+# 				[255,0,255],
+# 				[0,255,0],
+# 				[255,0,0]]
 myPoints = []
 
 def findColor(img,myColors,myColorValues):
@@ -81,7 +96,7 @@ def moveUI(newPoints):
 
 		if not len(newPoints) > 2:
 			for this_point in newPoints:
-				if this_point[-1] == 3:
+				if this_point[-1] == 0:
 					point_x = newPoints[-1][0]
 					point_y = newPoints[-1][1]
 							
@@ -89,10 +104,10 @@ def moveUI(newPoints):
 					screen_y = point_y*screenHeight/frameHeight
 					if action_type == "move":
 						pyautogui.mouseUp(button='left')
-						pyautogui.moveTo(screen_x, screen_y)
+						pyautogui.moveTo(screen_x, screen_y, duration=0, logScreenshot=False, _pause=False)
 					elif action_type == "drag":
 						pyautogui.mouseDown(button='left')
-						pyautogui.moveTo(screen_x, screen_y)
+						pyautogui.moveTo(screen_x, screen_y, duration=0, logScreenshot=False, _pause=False)
 						# pyautogui.dragTo(screen_x, screen_y, 0, button='left')
 					# else:
 

@@ -2,27 +2,47 @@ import cv2
 import numpy as np
 import pyautogui
 from time import sleep
-
 import sys
-capture_port = int(sys.argv[1]) if len(sys.argv) > 1 else 0
+import _thread
 
+config = {
+    "capture_port": 0,
+    "screenWidth": 1920,
+    "screenHeight": 1080,
+    "frameWidth": 640,
+    "frameHeight": 480,
+	"button_pause_time": 1,
+    "button_action_key": "space"
+}
 
-# cascade = cv2.CascadeClassifier('./data/haarcascade_frontalface_alt.xml')
+try:
+	with open('config.json', 'r') as f:
+		config = json.load(f)
+except:
+	pass
+
+capture_port = int(sys.argv[1]) if len(sys.argv) > 1 else config['capture_port']
+screenHeight = int(sys.argv[3]) if len(sys.argv) > 3 else config['screenHeight']
+screenWidth  = int(sys.argv[2]) if len(sys.argv) > 2 else config['screenWidth']
+frameWidth = config['frameWidth']
+frameHeight = config['frameHeight']
+button_pause_time = config['button_pause_time']
+button_action_key = config['button_action_key']
+
 fist = cv2.CascadeClassifier('./data/fist.xml')
 palm = cv2.CascadeClassifier('./data/open_palm.xml')
-# cascade = cv2.CascadeClassifier('./data/haarcascade_righteye_2splits.xml')
+
 cap = cv2.VideoCapture(capture_port) 
 scaling_factor = 0.5
 
 pressed = False
 spacePressed = False 
 
-while True:
-	ret, frame = cap.read() 
-	frame = cv2.flip(frame,1)   
-	# frame = cv2.resize(frame, None, fx=scaling_factor, fy=scaling_factor, interpolation=cv2.INTER_AREA)
-	fist_rects = fist.detectMultiScale(frame, scaleFactor=1.3, minNeighbors=5)  
-	palm_rects = palm.detectMultiScale(frame, scaleFactor=1.3, minNeighbors=5)
+def control_by_rect(palm_rects, fist_rects):
+
+	global pressed
+	global spacePressed 
+
 	for (x,y,w,h) in palm_rects:
 		centerx = 150
 		cv2.rectangle(frame, (x,y), (x+w,y+h), (0,255,100), 5)
@@ -53,13 +73,21 @@ while True:
 	for (x,y,w,h) in fist_rects:
 		cv2.rectangle(frame, (x, y), (x+w,y+h), (0,255,100), 5)
 		if (spacePressed==False):
-			pyautogui.press('space')
+			pyautogui.press(button_action_key)
 			spacePressed = True
-			print('pressed space' )
+			print('Button action called')
 			sleep(1)
 		else:
 			spacePressed = False
-			
+
+while True:
+	ret, frame = cap.read() 
+	frame = cv2.flip(frame,1)   
+	# frame = cv2.resize(frame, None, fx=scaling_factor, fy=scaling_factor, interpolation=cv2.INTER_AREA)
+	fist_rects = fist.detectMultiScale(frame, scaleFactor=1.3, minNeighbors=5)  
+	palm_rects = palm.detectMultiScale(frame, scaleFactor=1.3, minNeighbors=5)
+	
+	_thread.start_new_thread(control_by_rect,(palm_rects, fist_rects))
 	cv2.imshow('Media dolanshyk', frame)
 	    
 	c = cv2.waitKey(1)     

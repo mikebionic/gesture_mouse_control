@@ -1,0 +1,17 @@
+{
+    "capture_port": 0,
+    "screenWidth": 1920,
+    "screenHeight": 1080,
+    "frameWidth": 640,
+    "frameHeight": 480,
+    "button_pause_time": 1,
+    "button_action_key": "space",
+
+    "myColors": [[133, 37,163,179,210,255],
+        [70,98,2,94,250,255],
+        [0,207,255,112,255,255]],
+
+    "myColorValues": [[245,12,241],
+        [2,199,50],
+        [245,45,45]]
+}
